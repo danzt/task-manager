@@ -1,0 +1,89 @@
+<div class="board-block">
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <h2 class="view-title">Filtrar por:</h2>
+      <div class="filter-container">
+        <mat-form-field appearance="fill">
+          <mat-label>Buscar por nombre</mat-label>
+          <input
+            matInput
+            [(ngModel)]="searchQuery"
+            placeholder="Título de la tarea"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Filtrar por estado</mat-label>
+          <mat-select [(ngModel)]="selectedStatus">
+            <mat-option value="">Todos</mat-option>
+            <mat-option *ngFor="let type of types" [value]="type">{{
+              type
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <button
+        class="create-task-button"
+        mat-raised-button
+        color="primary"
+        (click)="createTask()"
+      >
+        Nueva Tarea
+      </button>
+      <div class="board-view">
+        <div class="tasks-container">
+          <mat-card
+            *ngFor="let status of ['To Do', 'In Progress', 'Done']"
+            class="task-column"
+            [ngClass]="status.toLowerCase().replace(' ', '-')"
+          >
+            <mat-card-header class="column-header">
+              <mat-icon>{{ getColumnIcon(status) }}</mat-icon>
+              <mat-card-title>{{ status }}</mat-card-title>
+              <mat-card-subtitle
+                >{{ getTasksByStatus(status).length }} tareas</mat-card-subtitle
+              >
+            </mat-card-header>
+            <mat-divider></mat-divider>
+            <mat-card-content>
+              <div
+                cdkDropList
+                [id]="status"
+                [cdkDropListConnectedTo]="connectedDropLists"
+                [cdkDropListData]="getTasksByStatus(status)"
+                class="task-list"
+                (cdkDropListDropped)="onTaskDrop($event, status)"
+              >
+                <mat-card
+                  *ngFor="let task of getTasksByStatus(status)"
+                  cdkDrag
+                  class="task-card"
+                >
+                  <mat-card-header>
+                    <mat-card-title>{{ task.title }}</mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content>
+                    <p>{{ task.description }}</p>
+                  </mat-card-content>
+                  <mat-card-actions>
+                    <button mat-button (click)="editTask(task.id)">
+                      Editar
+                    </button>
+                    <button
+                      mat-button
+                      color="warn"
+                      (click)="deleteTask(task.id)"
+                    >
+                      Eliminar
+                    </button>
+                  </mat-card-actions>
+                </mat-card>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

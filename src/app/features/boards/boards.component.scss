@@ -1,0 +1,25 @@
+.boards-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  .spacer {
+    flex: 1;
+  }
+
+  .boards-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+    padding: 16px;
+  }
+
+  mat-card {
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  mat-card:hover {
+    transform: scale(1.05);
+  }
+}

@@ -1,0 +1,24 @@
+<div class="create-board-container">
+  <h2>Crear Nuevo Tablero</h2>
+  <form [formGroup]="boardForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+    <div class="actions">
+      <button mat-button (click)="cancel()">Cancelar</button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="save()"
+        [disabled]="boardForm.invalid"
+      >
+        Guardar
+      </button>
+    </div>
+  </form>
+</div>

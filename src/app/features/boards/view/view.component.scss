@@ -1,0 +1,118 @@
+.board-block {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    padding: 12px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px;
+  }
+}
+
+.filter-container {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  mat-form-field {
+    flex: 1;
+  }
+}
+
+.create-task-button {
+  margin-bottom: 16px;
+  padding: 16px 24px;
+  margin-left: 25px;
+}
+.board-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .tasks-container {
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+  }
+
+  .task-column {
+    flex: 1;
+    min-width: 300px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 200px;
+    padding: 8px;
+    background-color: #f7f7f7;
+  }
+
+  .task-card {
+    cursor: grab;
+    background-color: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-radius: 8px;
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+
+    &:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    mat-card-title {
+      font-size: 1.1rem;
+      color: #1a237e;
+    }
+
+    mat-card-content p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #424242;
+    }
+
+    mat-card-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+  }
+}
+h1 {
+  font-size: 2rem;
+  text-align: center;
+  color: #3f51b5;
+  margin-bottom: 16px;
+}
+
+.task-column {
+  &.to-do {
+    background-color: #fbe9e7; /* Rojo claro */
+    border-top: 4px solid #ffab91; /* Rojo más intenso */
+  }
+
+  &.in-progress {
+    background-color: #e3f2fd; /* Azul claro */
+    border-top: 4px solid #90caf9; /* Azul más intenso */
+  }
+
+  &.done {
+    background-color: #e8f5e9; /* Verde claro */
+    border-top: 4px solid #a5d6a7; /* Verde más intenso */
+  }
+}

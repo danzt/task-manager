@@ -1,0 +1,10 @@
+<mat-toolbar color="primary" class="navbar">
+  <span class="logo">Gestión de Tareas</span>
+  <span class="spacer"></span>
+  <button mat-button color="accent" (click)="goToDashboard()">Dashboard</button>
+  <button mat-button color="warn" (click)="logout()">Cerrar Sesión</button>
+</mat-toolbar>
+
+<div class="app-content">
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,21 @@
+<div class="boards-container">
+  <mat-toolbar color="primary">
+    <span>Tableros</span>
+    <span class="spacer"></span>
+    <button mat-raised-button color="accent" (click)="addBoard()">
+      Nuevo Tablero
+    </button>
+  </mat-toolbar>
+
+  <div class="boards-list">
+    <mat-card *ngFor="let board of boards" (click)="openBoard(board.id)">
+      <mat-card-title>{{ board.name }}</mat-card-title>
+      <mat-card-content>{{ board.description }}</mat-card-content>
+    </mat-card>
+  </div>
+  <div class="dashboard-content">
+    <app-boards></app-boards>
+    <!-- Incluye los tableros directamente -->
+  </div>
+</div>
+
