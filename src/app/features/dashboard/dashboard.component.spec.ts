@@ -30,6 +30,6 @@ describe('DashboardComponent', () => {
     ];
     spyOn(service, 'boards$').and.returnValue(boards);
     component.searchQuery = 'Otro';
-    expect(component.filterBoards()).toEqual([boards[1]]);
+    expect(component.filterBoards(boards)).toEqual([boards[1]]);
   });
 });

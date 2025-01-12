@@ -9,7 +9,10 @@
     "test": "ng test",
     "serve:ssr:task-manager": "node dist/task-manager/server/server.mjs",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "dev:ssr": "ng run task-manager:serve-ssr",
+    "build:ssr": "ng build && ng run task-manager:server",
+    "serve:ssr": "node dist/task-manager/server/main.js"
   },
   "private": true,
   "dependencies": {
@@ -29,6 +32,7 @@
     "@ngrx/entity": "^19.0.0",
     "@ngrx/store": "^19.0.0",
     "@ngrx/store-devtools": "^19.0.0",
+    "@nguniversal/express-engine": "^7.0.2",
     "express": "^4.18.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
