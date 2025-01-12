@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -37,6 +37,12 @@ import { Board } from '../../core/models/board.models';
 export class DashboardComponent {
   boards: Board[] = [];
   searchQuery: string = '';
+  innerWidth: number = window.innerWidth;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.innerWidth = (event.target as Window).innerWidth;
+  }
 
   constructor(
     private authService: AuthService,
@@ -58,6 +64,20 @@ export class DashboardComponent {
 
   navigateToBoard(boardId: number): void {
     this.router.navigate(['/boards', boardId]);
+  }
+
+  getGridCols(): number {
+    if (this.innerWidth < 600) return 1;
+    if (this.innerWidth < 960) return 2;
+    return 4;
+  }
+
+  getTitleSpan(): number {
+    return this.innerWidth < 600 ? 1 : 3;
+  }
+
+  showMenuButton(): boolean {
+    return this.innerWidth >= 600;
   }
 
   addBoard(): void {

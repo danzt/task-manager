@@ -49,4 +49,7 @@ export class LoginComponent {
       }
     }
   }
+  navigateToRegister(): void {
+    this.router.navigate(['/auth/register']);
+  }
 }

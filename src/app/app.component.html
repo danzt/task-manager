@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" class="navbar">
+<mat-toolbar color="primary" *ngIf="showNavbar" class="navbar">
   <span class="logo">Gestión de Tareas</span>
   <span class="spacer"></span>
   <button mat-button color="accent" (click)="goToDashboard()">Dashboard</button>

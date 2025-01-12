@@ -27,8 +27,8 @@ export class BoardStorageService {
 
   addBoard(board: Board): void {
     const boards = this.boardsSubject.value;
-    boards.push(board);
-    this.saveBoards(boards);
+    boards.push(board); // Agrega el tablero al array
+    this.saveBoards(boards); // Guarda el estado actualizado
   }
 
   updateBoard(updatedBoard: Board): void {

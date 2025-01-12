@@ -1,0 +1,18 @@
+.register-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 16px;
+
+  mat-card {
+    padding: 16px;
+  }
+
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  button {
+    width: 100%;
+  }
+}

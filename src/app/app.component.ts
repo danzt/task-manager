@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -21,6 +21,8 @@ import { AuthService } from './core/services/auth.service';
 })
 export class AppComponent {
   title = 'task-manager';
+  showNavbar: boolean = true;
+
   boards = [
     { id: 1, name: 'Proyecto 1', description: 'Gestión del proyecto 1' },
     { id: 2, name: 'Proyecto 2', description: 'Gestión del proyecto 2' },
@@ -28,7 +30,15 @@ export class AppComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-  ) {}
+  ) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.showNavbar = !['/auth/login', '/auth/register'].includes(
+          event.urlAfterRedirects,
+        );
+      }
+    });
+  }
 
   addBoard() {
     this.router.navigate(['/boards/new']);

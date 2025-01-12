@@ -16,9 +16,9 @@
           <mat-label>Filtrar por estado</mat-label>
           <mat-select [(ngModel)]="selectedStatus">
             <mat-option value="">Todos</mat-option>
-            <mat-option *ngFor="let type of types" [value]="type">{{
-              type
-            }}</mat-option>
+            <mat-option *ngFor="let type of types" [value]="type">
+              {{ type }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -31,6 +31,7 @@
       >
         Nueva Tarea
       </button>
+
       <div class="board-view">
         <div class="tasks-container">
           <mat-card
@@ -41,9 +42,9 @@
             <mat-card-header class="column-header">
               <mat-icon>{{ getColumnIcon(status) }}</mat-icon>
               <mat-card-title>{{ status }}</mat-card-title>
-              <mat-card-subtitle
-                >{{ getTasksByStatus(status).length }} tareas</mat-card-subtitle
-              >
+              <mat-card-subtitle>
+                {{ getTasksByStatus(status).length }} tareas
+              </mat-card-subtitle>
             </mat-card-header>
             <mat-divider></mat-divider>
             <mat-card-content>
