@@ -104,11 +104,13 @@ export class ViewComponent implements OnInit {
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private boardStorageService: BoardStorageService,
-    private taskStorageService: TaskStorageService, // TODO: Eliminar
+    private taskStorageService: TaskStorageService,
   ) {}
 
   ngOnInit(): void {
     this.boardId = Number(this.route.snapshot.paramMap.get('id'));
+
+    // Cargar las tareas desde el servicio
     this.tasks = this.boardStorageService.getTasksByBoardId(this.boardId);
   }
 
@@ -138,17 +140,26 @@ export class ViewComponent implements OnInit {
   // All handles TODO Tasks
   createTask(): void {
     const newTask: Task = {
-      id: Date.now(),
+      id:
+        this.tasks.length > 0
+          ? Math.max(...this.tasks.map((t) => t.id)) + 1
+          : 1, // ID consecutivo
       title: 'Nueva Tarea',
       description: 'Descripción de la tarea',
       status: 'To Do',
     };
-    this.tasks.push(newTask); // Agrega la tarea localmente
-    this.boardStorageService.updateTasks(this.boardId, this.tasks); // Actualiza el servicio
+
+    // Agregar la tarea al array local
+    this.tasks = [...this.tasks, newTask];
+
+    // Actualizar el tablero en el servicio
+    this.boardStorageService.updateTasks(this.boardId, this.tasks);
+
+    // Notificación al usuario
     this.showNotification('Tarea creada con éxito');
   }
 
-  editTask(taskId: number) {
+  editTask(taskId: number): void {
     const task = this.tasks.find((t) => t.id === taskId);
     if (task) {
       const dialogRef = this.dialog.open(EditTaskDialogComponent, {
@@ -157,14 +168,18 @@ export class ViewComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
-          Object.assign(task, result); // Actualiza la tarea con los datos del modal
-          this.taskStorageService.saveTasks(this.tasks); // Guardar cambios
+          // Actualizar los datos locales
+          Object.assign(task, result);
+
+          // Actualizar el servicio
+          this.boardStorageService.updateTasks(this.boardId, this.tasks);
+
+          // Mostrar notificación
           this.showNotification('Tarea editada con éxito');
         }
       });
     }
   }
-
   deleteTask(taskId: number): void {
     this.tasks = this.tasks.filter((task) => task.id !== taskId);
     this.boardStorageService.updateTasks(this.boardId, this.tasks); // Actualiza el servicio

@@ -38,12 +38,14 @@
     </mat-form-field>
 
     <div class="boards-container">
-      <app-board-card
-        *ngFor="let board of filterBoards()"
-        [board]="board"
-        (viewBoard)="navigateToBoard($event)"
-        (deleteBoard)="removeBoard($event)"
-      ></app-board-card>
+      <ng-container *ngIf="boards$ | async as boards">
+        <app-board-card
+          *ngFor="let board of filterBoards(boards)"
+          [board]="board"
+          (viewBoard)="navigateToBoard($event)"
+          (deleteBoard)="removeBoard($event)"
+        ></app-board-card>
+      </ng-container>
     </div>
   </div>
 </div>

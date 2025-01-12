@@ -6,6 +6,8 @@ import {
   withEventReplay,
 } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideStore } from '@ngrx/store';
+import { boardReducer } from './store/board.reducer'; // Importa tu reducer
 
 provideRouter(routes);
 
@@ -15,5 +17,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideAnimationsAsync(),
+    provideStore({ boards: boardReducer }),
   ],
 };

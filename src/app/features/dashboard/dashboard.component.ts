@@ -1,6 +1,10 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,6 +18,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { BoardCardComponent } from './board-card/board-card.component'; // Importa el componente
 import { AuthService } from '../../core/services/auth.service';
 import { BoardStorageService } from '../../core/services/board-storage.service';
+import { take } from 'rxjs/operators';
 import { Board } from '../../core/models/board.models';
 
 @Component({
@@ -35,7 +40,7 @@ import { Board } from '../../core/models/board.models';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
-  boards: Board[] = [];
+  boards$: Observable<Board[]>; // Observable para manejar los tableros con NgRx
   searchQuery: string = '';
   innerWidth: number = window.innerWidth;
 
@@ -47,17 +52,16 @@ export class DashboardComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private boardStorageService: BoardStorageService,
-  ) {}
+    private store: Store,
+    private snackBar: MatSnackBar,
 
-  ngOnInit(): void {
-    this.boardStorageService.boards$.subscribe((boards) => {
-      this.boards = boards;
-    });
+    private boardStorageService: BoardStorageService,
+  ) {
+    this.boards$ = this.boardStorageService.boards$; // Observable de tableros
   }
 
-  filterBoards(): Board[] {
-    return this.boards.filter((board) =>
+  filterBoards(boards: Board[]): Board[] {
+    return boards.filter((board) =>
       board.name.toLowerCase().includes(this.searchQuery.toLowerCase()),
     );
   }
@@ -80,36 +84,48 @@ export class DashboardComponent {
     return this.innerWidth >= 600;
   }
 
+  showNotification(message: string): void {
+    this.snackBar.open(message, 'Cerrar', {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+    });
+  }
+
   addBoard(): void {
     const newBoard: Board = {
       id: Date.now(),
-      name: `Tablero ${this.boards.length + 1}`,
+      name: `Tablero ${Math.floor(Math.random() * 100)}`,
       description: 'Nuevo tablero',
       tasks: [],
     };
-    this.boardStorageService.addBoard(newBoard);
+    this.boardStorageService.addBoard(newBoard); // Agregar tablero
+    this.showNotification('Tablero agregado con éxito');
   }
 
   removeBoard(boardId: number): void {
-    this.boardStorageService.deleteBoard(boardId);
+    this.boardStorageService.deleteBoard(boardId); // Elimina el tablero a través del servicio
+    this.showNotification('Tablero eliminado con éxito');
+  }
+
+  exportBoards(): void {
+    this.boards$.pipe(take(1)).subscribe((boards) => {
+      const dataStr = JSON.stringify(boards, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'tableros.json';
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+    });
   }
 
   goToBoards() {
     console.log('Redirigiendo a /boards...');
     this.router.navigate(['/boards/news']);
-  }
-
-  exportBoards(): void {
-    const dataStr = JSON.stringify(this.boards, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = window.URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'tableros.json';
-    a.click();
-
-    window.URL.revokeObjectURL(url);
   }
 
   logout() {
